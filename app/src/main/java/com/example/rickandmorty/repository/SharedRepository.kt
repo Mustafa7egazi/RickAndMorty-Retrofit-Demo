@@ -2,7 +2,6 @@ package com.example.rickandmorty.repository
 
 
 import com.example.rickandmorty.data.ApiService
-import com.example.rickandmorty.pojo.Characters
 import com.example.rickandmorty.pojo.Results
 
 class SharedRepository {
@@ -20,6 +19,16 @@ class SharedRepository {
         val request = ApiService.retrofitService.getCharacterById(id)
         if (request.isSuccessful) {
             return request.body()
+        }
+        return null
+    }
+
+    suspend fun getMultipleCharacters(multipleIds:String): List<Results>? {
+        val request = ApiService.retrofitService.getMultipleCharacters(multipleIds)
+        if (request.isSuccessful){
+            if (request.body() != null){
+                return  request.body()!!
+            }
         }
         return null
     }

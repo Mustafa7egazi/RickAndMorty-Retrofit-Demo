@@ -13,11 +13,17 @@ class SharedViewModel : ViewModel() {
     private val repo = SharedRepository()
     private var _allCharacters = MutableLiveData<List<Results>?>()
     private var _singleCharacters = MutableLiveData<Results?>()
+    private var _setOfCharacters = MutableLiveData<List<Results>?>()
+
     val allCharacters: LiveData<List<Results>?>
         get() = _allCharacters
 
     val singleCharacters: LiveData<Results?>
         get() = _singleCharacters
+
+    val setOfCharacters:LiveData<List<Results>?>
+        get() = _setOfCharacters
+
 
 
     fun getCharacterById(id: Int) {
@@ -31,6 +37,14 @@ class SharedViewModel : ViewModel() {
         viewModelScope.launch {
             val result = repo.getAllCharacters()
             _allCharacters.value = result
+        }
+    }
+
+    fun getMultipleCharacters(multipleIds:String){
+        viewModelScope.launch {
+            val result = repo.getMultipleCharacters(multipleIds)
+            _setOfCharacters.value = result
+
         }
     }
 }

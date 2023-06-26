@@ -35,6 +35,8 @@ interface RickAndMortyApi {
     @GET("character/{char-id}")
     suspend fun getCharacterById(@Path("char-id") id:Int):Response<Results>
 
+    @GET("character/{multiple-ids}")
+    suspend fun getMultipleCharacters(@Path("multiple-ids") multipleIds:String):Response<List<Results>>
 }
 
 object ApiService {
