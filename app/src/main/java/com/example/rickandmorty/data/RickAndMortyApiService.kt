@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 private const val BASE_URL = "https://rickandmortyapi.com/api/"
@@ -29,8 +30,9 @@ interface RickAndMortyApi {
       fun getCharacterById():Call<CharacterModel>
      */
 
-    @GET("character")
-    suspend fun getAllCharacters(): Response<Characters>
+    @GET("character/")
+    suspend fun getAllCharacters(@Query("page") pageNum: Int): Response<Characters>
+
 
     @GET("character/{char-id}")
     suspend fun getCharacterById(@Path("char-id") id:Int):Response<Results>

@@ -6,8 +6,8 @@ import com.example.rickandmorty.pojo.Results
 
 class SharedRepository {
 
-    suspend fun getAllCharacters(): List<Results>? {
-        val request = ApiService.retrofitService.getAllCharacters()
+    suspend fun getAllCharacters(pageNum:Int): List<Results>? {
+        val request = ApiService.retrofitService.getAllCharacters(pageNum)
         if (request.isSuccessful) {
             if (request.body() != null)
                 return request.body()!!.results

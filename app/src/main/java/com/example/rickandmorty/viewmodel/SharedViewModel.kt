@@ -33,9 +33,9 @@ class SharedViewModel : ViewModel() {
         }
     }
 
-    fun getAllCharacters(){
+    fun getAllCharacters(pageNum:Int){
         viewModelScope.launch {
-            val result = repo.getAllCharacters()
+            val result = repo.getAllCharacters(pageNum)
             _allCharacters.value = result
         }
     }
