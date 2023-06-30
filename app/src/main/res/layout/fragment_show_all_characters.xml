@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:layout_marginTop="16dp"
             android:textStyle="italic|bold"
             android:textColor="#673AB7"
             android:text="Select a page to show (from 1 to 42)"
@@ -43,23 +44,39 @@
                 tools:ignore="HardcodedText" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/allCharactersRecycler"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/errorMessage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Error in loading characters, try again"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            android:textColor="#C61111"
-           android:gravity="center"
-            tools:ignore="HardcodedText" />
+            <ProgressBar
+                android:id="@+id/loadingIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:foregroundTint="#673AB7"
+                android:visibility="gone"
+                />
+
+
+            <TextView
+                android:id="@+id/errorMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Error in loading characters, try again"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:textColor="#C61111"
+                android:gravity="center"
+                tools:ignore="HardcodedText" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/allCharactersRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </FrameLayout>
     </LinearLayout>
 </layout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Page of Characters"
+        android:icon="@drawable/page_icon"
+        android:id="@+id/getPageOfCharacters"
+        tools:ignore="HardcodedText" />
+    <item android:title="Character by ID"
+        android:icon="@drawable/id_icon"
+        android:id="@+id/getCharacterById"
+        tools:ignore="HardcodedText" />
+    <item android:title="Multiple characters by ID"
+        android:icon="@drawable/group_persons"
+        android:id="@+id/getMultipleCharactersById"
+        tools:ignore="HardcodedText" />
+</menu>

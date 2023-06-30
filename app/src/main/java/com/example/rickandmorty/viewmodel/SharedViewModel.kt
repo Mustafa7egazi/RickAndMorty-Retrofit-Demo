@@ -14,6 +14,15 @@ class SharedViewModel : ViewModel() {
     private var _allCharacters = MutableLiveData<List<Results>?>()
     private var _singleCharacters = MutableLiveData<Results?>()
     private var _setOfCharacters = MutableLiveData<List<Results>?>()
+    private var _isLoading = MutableLiveData<Boolean>()
+
+
+    init {
+        _isLoading.value = true
+        _allCharacters.value = null
+        _singleCharacters.value = null
+    }
+
 
     val allCharacters: LiveData<List<Results>?>
         get() = _allCharacters
@@ -24,12 +33,18 @@ class SharedViewModel : ViewModel() {
     val setOfCharacters:LiveData<List<Results>?>
         get() = _setOfCharacters
 
+    val isLoading:LiveData<Boolean>
+        get() = _isLoading
+
+
+
 
 
     fun getCharacterById(id: Int) {
         viewModelScope.launch {
             val result = repo.getCharacterById(id)
             _singleCharacters.value = result
+            _isLoading.value = false
         }
     }
 
@@ -37,6 +52,9 @@ class SharedViewModel : ViewModel() {
         viewModelScope.launch {
             val result = repo.getAllCharacters(pageNum)
             _allCharacters.value = result
+            if (_allCharacters.value != null){
+                _isLoading.value = false
+            }
         }
     }
 
@@ -44,6 +62,7 @@ class SharedViewModel : ViewModel() {
         viewModelScope.launch {
             val result = repo.getMultipleCharacters(multipleIds)
             _setOfCharacters.value = result
+            _isLoading.value = false
 
         }
     }
