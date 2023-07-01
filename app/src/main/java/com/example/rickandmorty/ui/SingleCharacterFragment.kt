@@ -12,7 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.rickandmorty.R
 import com.example.rickandmorty.databinding.FragmentSingleCharacterBinding
+import com.example.rickandmorty.util.isInternetAvailable
 import com.example.rickandmorty.viewmodel.SharedViewModel
+import java.io.IOException
 
 class SingleCharacterFragment : Fragment() {
 
@@ -50,11 +52,14 @@ class SingleCharacterFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    binding.loadingIndicatorSingleCharacter.visibility = View.VISIBLE
-                    binding.hintMessage.visibility = View.INVISIBLE
-                    viewModel.getCharacterById(enteredId!!)
-                    viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-                        if (!isLoading) {
+
+                    if (isInternetAvailable(requireContext())) {
+                        try {
+                            viewModel.getCharacterById(enteredId!!)
+
+                            binding.loadingIndicatorSingleCharacter.visibility = View.VISIBLE
+                            binding.hintMessage.visibility = View.INVISIBLE
+
                             viewModel.singleCharacters.observe(viewLifecycleOwner) { character ->
                                 if (character != null) {
                                     binding.singleCharacterName.text = character.name
@@ -71,7 +76,7 @@ class SingleCharacterFragment : Fragment() {
                                     if (character.gender == "Female") {
                                         binding.singleCharacterGenderIcon.setImageResource(R.drawable.female)
                                         binding.singleCharacterGender.text = "Female"
-                                    }else{
+                                    } else {
                                         binding.singleCharacterGenderIcon.setImageResource(R.drawable.male)
                                         binding.singleCharacterGender.text = "Male"
                                     }
@@ -85,17 +90,29 @@ class SingleCharacterFragment : Fragment() {
 
                                     binding.loadingIndicatorSingleCharacter.visibility = View.GONE
                                     binding.singleCharacterParentLayout.visibility = View.VISIBLE
+                                   return@observe
 
-
-                                } else {
-                                    binding.hintMessage.apply {
-                                        text = "Error while loading character, try again"
-                                        visibility = View.VISIBLE
-                                    }
-                                    binding.loadingIndicatorSingleCharacter.visibility = View.GONE
                                 }
                             }
+
+                        } catch (e: IOException) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Request timed out. Please check your internet connection and try again.!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
+                    } else {
+                        binding.loadingIndicatorSingleCharacter.visibility = View.INVISIBLE
+                        binding.hintMessage.apply {
+                            text = "Failed due to lost connection!"
+                            visibility = View.VISIBLE
+                        }
+                        Toast.makeText(
+                            requireContext(),
+                            "No internet connection problem has occurred!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

@@ -19,7 +19,7 @@ import com.example.rickandmorty.viewmodel.SharedViewModel
 class MultipleCharactersFragment : Fragment() {
 
     private lateinit var binding: FragmentMultipleCharactersBinding
-    private val collectionOfIds = mutableListOf<Int>()
+    private val collectionOfIds = mutableSetOf<Int>()
     private val viewModel: SharedViewModel by lazy {
         ViewModelProvider(this)[SharedViewModel::class.java]
     }
@@ -96,9 +96,14 @@ class MultipleCharactersFragment : Fragment() {
                     }
 
                 } else {
+                    binding.isLoadingMultipleCharacters.visibility = View.GONE
+                    binding.noSpecifiedIdMessage.apply {
+                        text = "Failed due to lost connection!"
+                        visibility = View.VISIBLE
+                    }
                     Toast.makeText(
                         requireContext(),
-                        "Internet connection problems!",
+                        "No internet connection problem has occurred!",
                         Toast.LENGTH_SHORT
                     )
                         .show()

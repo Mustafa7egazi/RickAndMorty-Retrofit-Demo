@@ -59,7 +59,7 @@
             android:paddingStart="16dp"
             android:paddingTop="5dp"
             android:paddingEnd="16dp"
-            android:text="click insert to enter additional id and fetch to get all characters of the ids you have entered (1 to 86)"
+            android:text="click insert to enter additional id and fetch to get all characters of the ids you have entered (1 to 826)"
             android:textColor="#673AB7"
             app:layout_constraintEnd_toEndOf="@+id/idsForMultipleCharactersET"
             app:layout_constraintStart_toStartOf="@+id/idsForMultipleCharactersET"

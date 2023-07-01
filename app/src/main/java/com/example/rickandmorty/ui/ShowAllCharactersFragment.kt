@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.rickandmorty.R
 import com.example.rickandmorty.adapter.AllCharactersAdapter
 import com.example.rickandmorty.databinding.FragmentShowAllCharactersBinding
+import com.example.rickandmorty.util.isInternetAvailable
 import com.example.rickandmorty.viewmodel.SharedViewModel
 
 
@@ -42,12 +43,6 @@ class ShowAllCharactersFragment : Fragment() {
             binding.errorMessage.visibility = View.VISIBLE
         }
 
-        binding.pageToBeSelected.doOnTextChanged { _, _, _, _ ->
-            binding.allCharactersRecycler.visibility = View.GONE
-            binding.errorMessage.text = "Enter a page and press load button"
-            binding.errorMessage.visibility = View.VISIBLE
-        }
-
         binding.loadPageBtn.setOnClickListener {
             binding.loadingIndicator.visibility = View.VISIBLE
             binding.errorMessage.visibility = View.GONE
@@ -63,25 +58,34 @@ class ShowAllCharactersFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    viewModel.getAllCharacters(page!!)
-                    viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-                        if (!isLoading) {
-                            binding.allCharactersRecycler.visibility = View.VISIBLE
-                            binding.loadingIndicator.visibility = View.GONE
+                    if (isInternetAvailable(requireContext())) {
+                        binding.loadingIndicator.visibility = View.VISIBLE
+                        binding.errorMessage.visibility = View.GONE
+                        viewModel.getAllCharacters(page!!)
+                        binding.allCharactersRecycler.visibility = View.VISIBLE
+                        binding.loadingIndicator.visibility = View.GONE
 
-                            val adapter = AllCharactersAdapter()
-
-
-                            viewModel.allCharacters.observe(viewLifecycleOwner) {
-                                if (it != null) {
-                                    adapter.submitList(it)
-                                    binding.allCharactersRecycler.adapter = adapter
-                                } else {
-                                    binding.allCharactersRecycler.visibility = View.GONE
-                                    binding.errorMessage.visibility = View.VISIBLE
-                                }
+                        val adapter = AllCharactersAdapter()
+                        viewModel.allCharacters.observe(viewLifecycleOwner) {
+                            if (it != null) {
+                                adapter.submitList(it)
+                                binding.allCharactersRecycler.adapter = adapter
+                            } else {
+                                binding.allCharactersRecycler.visibility = View.GONE
+                                binding.errorMessage.visibility = View.VISIBLE
                             }
                         }
+                    } else {
+                        binding.errorMessage.apply {
+                            text = "Failed due to lost connection!"
+                            visibility = View.VISIBLE
+                        }
+                        binding.loadingIndicator.visibility = View.GONE
+                        Toast.makeText(
+                            requireContext(),
+                            "No internet connection problem has occurred!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
