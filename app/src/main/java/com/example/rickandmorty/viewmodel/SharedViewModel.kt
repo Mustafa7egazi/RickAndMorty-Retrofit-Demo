@@ -21,6 +21,7 @@ class SharedViewModel : ViewModel() {
         _isLoading.value = true
         _allCharacters.value = null
         _singleCharacters.value = null
+        _setOfCharacters.value = null
     }
 
 
@@ -63,7 +64,6 @@ class SharedViewModel : ViewModel() {
             val result = repo.getMultipleCharacters(multipleIds)
             _setOfCharacters.value = result
             _isLoading.value = false
-
         }
     }
 }

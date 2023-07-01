@@ -14,6 +14,11 @@
             app:destination="@id/singleCharacterFragment"
             app:popUpTo="@id/showAllCharactersFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_showAllCharactersFragment_to_multipleCharactersFragment"
+            app:destination="@id/multipleCharactersFragment"
+            app:popUpTo="@id/showAllCharactersFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/singleCharacterFragment"
@@ -22,6 +27,11 @@
         <action
             android:id="@+id/action_singleCharacterFragment_to_showAllCharactersFragment"
             app:destination="@id/showAllCharactersFragment"
+            app:popUpTo="@id/singleCharacterFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_singleCharacterFragment_to_multipleCharactersFragment"
+            app:destination="@id/multipleCharactersFragment"
             app:popUpTo="@id/singleCharacterFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -36,5 +46,23 @@
         <action
             android:id="@+id/action_homeFragment_to_showAllCharactersFragment"
             app:destination="@id/showAllCharactersFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_multipleCharactersFragment"
+            app:destination="@id/multipleCharactersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/multipleCharactersFragment"
+        android:name="com.example.rickandmorty.ui.MultipleCharactersFragment"
+        android:label="Multiple characters" >
+        <action
+            android:id="@+id/action_multipleCharactersFragment_to_showAllCharactersFragment"
+            app:destination="@id/showAllCharactersFragment"
+            app:popUpTo="@id/multipleCharactersFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_multipleCharactersFragment_to_singleCharacterFragment"
+            app:destination="@id/singleCharacterFragment"
+            app:popUpTo="@id/multipleCharactersFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

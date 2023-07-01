@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
                         findNavController(R.id.hostingFragment).navigate(R.id.action_homeFragment_to_showAllCharactersFragment)
                     }else if ((binding.hostingFragment.findNavController().currentDestination?.label == "Single character")){
                         findNavController(R.id.hostingFragment).navigate(R.id.action_singleCharacterFragment_to_showAllCharactersFragment)
+                    }else if (binding.hostingFragment.findNavController().currentDestination?.label == "Multiple characters"){
+                        findNavController(R.id.hostingFragment).navigate(R.id.action_multipleCharactersFragment_to_showAllCharactersFragment)
                     }
                 }
                 R.id.getCharacterById -> {
@@ -47,6 +49,17 @@ class MainActivity : AppCompatActivity() {
                         findNavController(R.id.hostingFragment).navigate(R.id.action_showAllCharactersFragment_to_singleCharacterFragment)
                     }else if (binding.hostingFragment.findNavController().currentDestination?.label == "Rick And Morty API"){
                         findNavController(R.id.hostingFragment).navigate(R.id.action_homeFragment_to_singleCharacterFragment)
+                    }else if (binding.hostingFragment.findNavController().currentDestination?.label == "Multiple characters"){
+                        findNavController(R.id.hostingFragment).navigate(R.id.action_multipleCharactersFragment_to_singleCharacterFragment)
+                    }
+                }
+                R.id.getMultipleCharactersById ->{
+                    if ((binding.hostingFragment.findNavController().currentDestination?.label == "Page of characters")){
+                        findNavController(R.id.hostingFragment).navigate(R.id.action_showAllCharactersFragment_to_multipleCharactersFragment)
+                    }else if (binding.hostingFragment.findNavController().currentDestination?.label == "Rick And Morty API"){
+                        findNavController(R.id.hostingFragment).navigate(R.id.action_homeFragment_to_multipleCharactersFragment)
+                    }else if (binding.hostingFragment.findNavController().currentDestination?.label == "Single character"){
+                        findNavController(R.id.hostingFragment).navigate(R.id.action_singleCharacterFragment_to_multipleCharactersFragment)
                     }
                 }
             }
