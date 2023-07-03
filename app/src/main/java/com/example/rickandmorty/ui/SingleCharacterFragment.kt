@@ -39,6 +39,40 @@ class SingleCharacterFragment : Fragment() {
             false
         )
 
+        viewModel.singleCharacters.observe(viewLifecycleOwner) { character ->
+            if (character != null) {
+                binding.singleCharacterName.text = character.name
+                Glide.with(requireContext())
+                    .load(character.image)
+                    .placeholder(R.drawable.loading)
+                    .error(R.drawable.failed)
+                    .into(binding.singleCharacterImage)
+
+                if (character.status == "Alive") {
+                    binding.singleCharacterStatusImage.setImageResource(R.drawable.online)
+                }
+
+                if (character.gender == "Female") {
+                    binding.singleCharacterGenderIcon.setImageResource(R.drawable.female)
+                    binding.singleCharacterGender.text = "Female"
+                } else {
+                    binding.singleCharacterGenderIcon.setImageResource(R.drawable.male)
+                    binding.singleCharacterGender.text = "Male"
+                }
+
+                binding.singleCharacterStatus.text =
+                    "${character.status} - ${character.species}"
+
+                binding.singleCharacterLocation.text =
+                    character.location.name
+                binding.singleCharacterCreationTime.text = character.created
+
+                binding.loadingIndicatorSingleCharacter.visibility = View.GONE
+                binding.singleCharacterParentLayout.visibility = View.VISIBLE
+
+            }
+        }
+
         binding.loadSingleCharacter.setOnClickListener {
             enteredId = binding.idToBeEntered.text.toString().toIntOrNull()
             if (enteredId == null) {
@@ -56,44 +90,8 @@ class SingleCharacterFragment : Fragment() {
                     if (isInternetAvailable(requireContext())) {
                         try {
                             viewModel.getCharacterById(enteredId!!)
-
                             binding.loadingIndicatorSingleCharacter.visibility = View.VISIBLE
                             binding.hintMessage.visibility = View.INVISIBLE
-
-                            viewModel.singleCharacters.observe(viewLifecycleOwner) { character ->
-                                if (character != null) {
-                                    binding.singleCharacterName.text = character.name
-                                    Glide.with(requireContext())
-                                        .load(character.image)
-                                        .placeholder(R.drawable.loading)
-                                        .error(R.drawable.failed)
-                                        .into(binding.singleCharacterImage)
-
-                                    if (character.status == "Alive") {
-                                        binding.singleCharacterStatusImage.setImageResource(R.drawable.online)
-                                    }
-
-                                    if (character.gender == "Female") {
-                                        binding.singleCharacterGenderIcon.setImageResource(R.drawable.female)
-                                        binding.singleCharacterGender.text = "Female"
-                                    } else {
-                                        binding.singleCharacterGenderIcon.setImageResource(R.drawable.male)
-                                        binding.singleCharacterGender.text = "Male"
-                                    }
-
-                                    binding.singleCharacterStatus.text =
-                                        "${character.status} - ${character.species}"
-
-                                    binding.singleCharacterLocation.text =
-                                        character.location.name
-                                    binding.singleCharacterCreationTime.text = character.created
-
-                                    binding.loadingIndicatorSingleCharacter.visibility = View.GONE
-                                    binding.singleCharacterParentLayout.visibility = View.VISIBLE
-                                   return@observe
-
-                                }
-                            }
 
                         } catch (e: IOException) {
                             Toast.makeText(

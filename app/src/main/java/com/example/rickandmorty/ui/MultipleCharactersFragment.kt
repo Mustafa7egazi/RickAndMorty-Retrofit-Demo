@@ -37,6 +37,34 @@ class MultipleCharactersFragment : Fragment() {
             false
         )
 
+
+        val adapterForMultipleCharactersBinding = AllCharactersAdapter()
+        viewModel.setOfCharacters.observe(viewLifecycleOwner) { groupOfCharacters ->
+            if (groupOfCharacters != null) {
+                adapterForMultipleCharactersBinding.submitList(groupOfCharacters)
+                binding.groupOfCharactersRecycler.apply {
+                    adapter = adapterForMultipleCharactersBinding
+                    visibility = View.VISIBLE
+                }
+                binding.isLoadingMultipleCharacters.visibility = View.GONE
+                binding.noSpecifiedIdMessage.visibility = View.GONE
+            }
+        }
+
+        viewModel.singleCharacters.observe(viewLifecycleOwner) { groupOfCharacters ->
+            if (groupOfCharacters != null) {
+                val character = mutableListOf(groupOfCharacters)
+                adapterForMultipleCharactersBinding.submitList(character)
+                binding.groupOfCharactersRecycler.apply {
+                    adapter = adapterForMultipleCharactersBinding
+                    visibility = View.VISIBLE
+                }
+                binding.isLoadingMultipleCharacters.visibility = View.GONE
+                binding.noSpecifiedIdMessage.visibility = View.GONE
+            }
+        }
+
+
         binding.insertIdBtn.setOnClickListener {
             val id: Int? = binding.idsForMultipleCharactersET.text.toString().toIntOrNull()
             binding.idsForMultipleCharactersET.text.clear()
@@ -55,7 +83,6 @@ class MultipleCharactersFragment : Fragment() {
 
                 if (isInternetAvailable(requireContext())) {
                     binding.isLoadingMultipleCharacters.visibility = View.VISIBLE
-                    val adapterForMultipleCharactersBinding = AllCharactersAdapter()
                     var arg = ""
                     for (id in collectionOfIds) {
                         arg += if (id != collectionOfIds.last()) {
@@ -67,32 +94,9 @@ class MultipleCharactersFragment : Fragment() {
                     if (collectionOfIds.size == 1) {
                         viewModel.getCharacterById(arg.toInt())
                         binding.isLoadingMultipleCharacters.visibility = View.VISIBLE
-                        viewModel.singleCharacters.observe(viewLifecycleOwner) { groupOfCharacters ->
-                            if (groupOfCharacters != null) {
-                                val character = mutableListOf(groupOfCharacters)
-                                adapterForMultipleCharactersBinding.submitList(character)
-                                binding.groupOfCharactersRecycler.apply {
-                                    adapter = adapterForMultipleCharactersBinding
-                                    visibility = View.VISIBLE
-                                }
-                                binding.isLoadingMultipleCharacters.visibility = View.GONE
-                                binding.noSpecifiedIdMessage.visibility = View.GONE
-                            }
-                        }
                     } else {
                         viewModel.getMultipleCharacters(arg)
                         binding.isLoadingMultipleCharacters.visibility = View.VISIBLE
-                        viewModel.setOfCharacters.observe(viewLifecycleOwner) { groupOfCharacters ->
-                            if (groupOfCharacters != null) {
-                                adapterForMultipleCharactersBinding.submitList(groupOfCharacters)
-                                binding.groupOfCharactersRecycler.apply {
-                                    adapter = adapterForMultipleCharactersBinding
-                                    visibility = View.VISIBLE
-                                }
-                                binding.isLoadingMultipleCharacters.visibility = View.GONE
-                                binding.noSpecifiedIdMessage.visibility = View.GONE
-                            }
-                        }
                     }
 
                 } else {
@@ -111,7 +115,6 @@ class MultipleCharactersFragment : Fragment() {
 
             }
         }
-
 
         return binding.root
     }

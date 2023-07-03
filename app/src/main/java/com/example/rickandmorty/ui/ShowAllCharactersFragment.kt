@@ -38,6 +38,19 @@ class ShowAllCharactersFragment : Fragment() {
             container,
             false
         )
+
+        val adapter = AllCharactersAdapter()
+        viewModel.allCharacters.observe(viewLifecycleOwner) {
+            if (it != null) {
+                adapter.submitList(it)
+                binding.allCharactersRecycler.adapter = adapter
+            } else {
+                binding.allCharactersRecycler.visibility = View.GONE
+                binding.errorMessage.visibility = View.VISIBLE
+            }
+        }
+
+
         if (page == 0) {
             binding.errorMessage.text = "No page selected yet"
             binding.errorMessage.visibility = View.VISIBLE
@@ -65,16 +78,7 @@ class ShowAllCharactersFragment : Fragment() {
                         binding.allCharactersRecycler.visibility = View.VISIBLE
                         binding.loadingIndicator.visibility = View.GONE
 
-                        val adapter = AllCharactersAdapter()
-                        viewModel.allCharacters.observe(viewLifecycleOwner) {
-                            if (it != null) {
-                                adapter.submitList(it)
-                                binding.allCharactersRecycler.adapter = adapter
-                            } else {
-                                binding.allCharactersRecycler.visibility = View.GONE
-                                binding.errorMessage.visibility = View.VISIBLE
-                            }
-                        }
+
                     } else {
                         binding.errorMessage.apply {
                             text = "Failed due to lost connection!"
